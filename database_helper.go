@@ -1,4 +1,4 @@
-package pgsqlhelper
+package pgxhelper
 
 import (
 	"context"
