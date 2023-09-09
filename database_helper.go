@@ -11,6 +11,7 @@ type DatabaseHelper struct {
 	Pool *pgxpool.Pool
 }
 
+
 type Scanner = func(row pgx.Row) error
 
 const (
