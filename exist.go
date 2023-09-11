@@ -16,7 +16,7 @@ func (dh *DatabaseHelper) Exist(ctx context.Context, table string, condition str
 		return nil
 	}
 
-	query := fmt.Sprintf("EXISTS (SELECT 1 FROM %s WHERE %s )", table, condition)
+	query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM %s WHERE %s )", table, condition)
 
 	if err := dh.Query(ctx, scanner, query, values...); err != nil {
 		return false, err
