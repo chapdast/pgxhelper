@@ -20,7 +20,7 @@ func (c *Condition) valExtractor(values *[]any) (string, any, any, any) {
 	}
 }
 
-func (dh DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup) string {
+func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup) string {
 
 	if len(opts) == 0 {
 		return ""
