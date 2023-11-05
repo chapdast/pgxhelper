@@ -78,31 +78,29 @@ func (c Config) MakeDSN() string {
 		c.User, c.Password, c.Host, c.Port, c.DBName, c.SslMode, c.Timezone)
 }
 
-
 type KeysConfig struct {
 	Host     string
 	Port     string
 	User     string
 	Password string
-	Name   string
+	Name     string
 	SslMode  string
 	Timezone string
 }
+
 var defaultConfig *KeysConfig = &KeysConfig{
-	Host     : "DB_HOST",
-	Port     : "DB_PORT",
-	User     : "DB_USER",
-	Password : "DB_PASSWORD",
-	Name     : "DB_NAME",
-	SslMode  : "DB_SSL_MODE",
-	Timezone : "DB_TIMEZONE",
+	Host:     "DB_HOST",
+	Port:     "DB_PORT",
+	User:     "DB_USER",
+	Password: "DB_PASSWORD",
+	Name:     "DB_NAME",
+	SslMode:  "DB_SSL_MODE",
+	Timezone: "DB_TIMEZONE",
 }
-
-
 
 func GetConfigFromEnvOption(keys *KeysConfig) (DBConfig, error) {
 	if keys == nil {
-		keys = defaultConfig
+		return nil, fmt.Errorf("keysConfig is nil")
 	}
 	dbc := &Config{}
 	var err error
