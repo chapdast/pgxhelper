@@ -15,11 +15,21 @@ type DatabaseHelper struct {
 type Scanner = func(row pgx.Row) error
 
 const (
-	OPR_EQUAL = "="
-	OPR_IN    = "IN"
-	OPR_ANY   = "ANY"
-	OPR_GTE   = ">="
+	OPR_EQUAL     = "="
+	OPR_NOT_EQUAL = "!="
+	OPR_IN        = "IN"
+	OPR_ANY       = "ANY"
+	OPR_GTE       = ">="
+	OPR_GT        = ">"
+	OPR_LTE       = "<="
+	OPR_LT        = "<"
+	OPR_LIKE      = "LIKE"
+	OPR_NOT_LIKE  = "NOT LIKE"
+	OPR_IS        = "IS"
+	OPR_IS_NOT    = "IS NOT"
+	OPR_IS_NULL   = "_NULL_"
 )
+
 const (
 	JOINER_AND Joiner = " AND "
 	JOINER_OR  Joiner = " OR "

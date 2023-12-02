@@ -40,8 +40,14 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 		}
 		localCond := make([]string, 0)
 		for _, cond := range val.Conditions {
-			f, a, b, c := cond.valExtractor(values)
-			localCond = append(localCond, fmt.Sprintf(f, a, b, c))
+			
+			if cond.Operator == OPR_IS_NULL {
+				localCond = append(localCond, fmt.Sprintf("%s IS NULL", cond.ColumnName))
+			}else{
+				f, a, b, c := cond.valExtractor(values)
+				localCond = append(localCond, fmt.Sprintf(f, a, b, c))
+			}
+			
 		}
 		// handle subgroups
 		grp := val.Group
@@ -49,8 +55,13 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 			subCond := make([]string, 0)
 
 			for _, gcond := range grp.Conditions {
-				f, a, b, c := gcond.valExtractor(values)
-				subCond = append(subCond, fmt.Sprintf(f, a, b, c))
+				if gcond.Operator == OPR_IS_NULL {
+					localCond = append(localCond, fmt.Sprintf("%s IS NULL", gcond.ColumnName))
+				}else{
+					f, a, b, c := gcond.valExtractor(values)
+					subCond = append(subCond, fmt.Sprintf(f, a, b, c))
+				}
+				
 			}
 			localCond = append(localCond, fmt.Sprintf("(%s)", strings.Join(subCond, grp.Join)))
 			grp = grp.Group
