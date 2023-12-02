@@ -5,18 +5,20 @@ import (
 	"strings"
 )
 
-func (c *Condition) valExtractor(values *[]any) (string, any, any, any) {
+func (c *Condition) valExtractor(values *[]any) (string, []any) {
 
 	switch c.Operator {
 	case OPR_ANY:
 		*values = append(*values, c.Value)
-		return "$%d =%s(%s)", len(*values), c.Operator, c.ColumnName
+		return "$%d =%s(%s)", []any{len(*values), c.Operator, c.ColumnName}
 	case OPR_IN:
 		*values = append(*values, c.Value)
-		return "$%d %s %s", len(*values), c.Operator, c.ColumnName
+		return "$%d %s %s", []any{len(*values), c.Operator, c.ColumnName}
+	case OPR_IS_NULL:
+		return "%s IS NULL", []any{c.ColumnName}
 	default:
 		*values = append(*values, c.Value)
-		return "%s %s $%d", c.ColumnName, c.Operator, len(*values)
+		return "%s %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
 	}
 }
 
@@ -40,14 +42,8 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 		}
 		localCond := make([]string, 0)
 		for _, cond := range val.Conditions {
-			
-			if cond.Operator == OPR_IS_NULL {
-				localCond = append(localCond, fmt.Sprintf("%s IS NULL", cond.ColumnName))
-			}else{
-				f, a, b, c := cond.valExtractor(values)
-				localCond = append(localCond, fmt.Sprintf(f, a, b, c))
-			}
-			
+			f, a := cond.valExtractor(values)
+			localCond = append(localCond, fmt.Sprintf(f, a...))
 		}
 		// handle subgroups
 		grp := val.Group
@@ -55,13 +51,10 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 			subCond := make([]string, 0)
 
 			for _, gcond := range grp.Conditions {
-				if gcond.Operator == OPR_IS_NULL {
-					subCond = append(subCond, fmt.Sprintf("%s IS NULL", gcond.ColumnName))
-				}else{
-					f, a, b, c := gcond.valExtractor(values)
-					subCond = append(subCond, fmt.Sprintf(f, a, b, c))
-				}
-				
+
+				f, a := gcond.valExtractor(values)
+				subCond = append(subCond, fmt.Sprintf(f, a...))
+
 			}
 			localCond = append(localCond, fmt.Sprintf("(%s)", strings.Join(subCond, grp.Join)))
 			grp = grp.Group
@@ -70,7 +63,7 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 		conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(localCond, val.Join)))
 	}
 
-	if len(conditions) == 0 || len(*values) == 0 {
+	if len(conditions) == 0 {
 		return ""
 	}
 	return fmt.Sprintf(" WHERE %s", strings.Join(conditions, " AND "))
