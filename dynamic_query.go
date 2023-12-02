@@ -56,7 +56,7 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 
 			for _, gcond := range grp.Conditions {
 				if gcond.Operator == OPR_IS_NULL {
-					localCond = append(localCond, fmt.Sprintf("%s IS NULL", gcond.ColumnName))
+					subCond = append(subCond, fmt.Sprintf("%s IS NULL", gcond.ColumnName))
 				}else{
 					f, a, b, c := gcond.valExtractor(values)
 					subCond = append(subCond, fmt.Sprintf(f, a, b, c))
