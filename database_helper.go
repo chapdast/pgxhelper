@@ -11,7 +11,6 @@ type DatabaseHelper struct {
 	Pool *pgxpool.Pool
 }
 
-
 type Scanner = func(row pgx.Row) error
 
 const (
@@ -40,7 +39,7 @@ type Joiner = string
 type ConditionGroup struct {
 	Join       Joiner
 	Conditions []*Condition
-	Group      *ConditionGroup
+	// Group      *ConditionGroup
 }
 
 type Condition struct {
@@ -51,9 +50,5 @@ type Condition struct {
 
 var (
 	ErrDuplicateKey = fmt.Errorf("DUPLICATE KEY")
-	ErrNotFound = fmt.Errorf("NOT FOUND")
+	ErrNotFound     = fmt.Errorf("NOT FOUND")
 )
-
-
-
-

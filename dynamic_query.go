@@ -31,7 +31,7 @@ func (c *Condition) valExtractor(values *[]any) (string, []any) {
 	}
 }
 
-func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup) string {
+func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup, sort *Sort) string {
 
 	if len(opts) == 0 {
 		return ""
@@ -55,25 +55,30 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 			localCond = append(localCond, fmt.Sprintf(f, a...))
 		}
 		// handle subgroups
-		grp := val.Group
-		for grp != nil {
-			subCond := make([]string, 0)
+		// grp := val.Group
+		// for grp != nil {
+		// 	subCond := make([]string, 0)
 
-			for _, gcond := range grp.Conditions {
+		// 	for _, gcond := range grp.Conditions {
 
-				f, a := gcond.valExtractor(values)
-				subCond = append(subCond, fmt.Sprintf(f, a...))
+		// 		f, a := gcond.valExtractor(values)
+		// 		subCond = append(subCond, fmt.Sprintf(f, a...))
 
-			}
-			localCond = append(localCond, fmt.Sprintf("(%s)", strings.Join(subCond, grp.Join)))
-			grp = grp.Group
-		}
+		// 	}
+		// 	localCond = append(localCond, fmt.Sprintf("(%s)", strings.Join(subCond, grp.Join)))
+		// 	grp = grp.Group
+		// }
 
 		conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(localCond, val.Join)))
 	}
 
-	if len(conditions) == 0 {
-		return ""
+	query := ""
+	if len(conditions) != 0 {
+		query = fmt.Sprintf(" WHERE %s", strings.Join(conditions, " AND "))
 	}
-	return fmt.Sprintf(" WHERE %s", strings.Join(conditions, " AND "))
+	if sort != nil {
+		query += fmt.Sprintf("%s ORDER BY %s %s ", query, sort.Column, sort.Direction)
+	}
+
+	return query
 }

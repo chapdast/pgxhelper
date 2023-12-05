@@ -39,7 +39,7 @@ func TestDatabaseHelper_BuildDynamicQuery(t *testing.T) {
 						Value:      4,
 					},
 				},
-				Group: nil,
+				// Group: nil,
 			},
 			{
 				Join: JOINER_OR,
@@ -55,21 +55,21 @@ func TestDatabaseHelper_BuildDynamicQuery(t *testing.T) {
 						Value:      4,
 					},
 				},
-				Group: &ConditionGroup{
-					Join: JOINER_AND,
-					Conditions: []*Condition{
-						{
-							ColumnName: "Oa1",
-							Operator:   OPR_GTE,
-							Value:      1,
-						},
-						{
-							ColumnName: "Oa2",
-							Operator:   OPR_EQUAL,
-							Value:      4,
-						},
-					},
-				},
+				// Group: &ConditionGroup{
+				// 	Join: JOINER_AND,
+				// 	Conditions: []*Condition{
+				// 		{
+				// 			ColumnName: "Oa1",
+				// 			Operator:   OPR_GTE,
+				// 			Value:      1,
+				// 		},
+				// 		{
+				// 			ColumnName: "Oa2",
+				// 			Operator:   OPR_EQUAL,
+				// 			Value:      4,
+				// 		},
+				// 	},
+				// },
 			},
 		})
 		success := " WHERE (a1 >= $1 AND a2 = $2) AND (O1 >= $3 OR O2 = $4 OR (Oa1 >= $5 AND Oa2 = $6))"
