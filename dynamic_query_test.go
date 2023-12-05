@@ -9,7 +9,7 @@ func TestDatabaseHelper_BuildDynamicQuery(t *testing.T) {
 
 		values := make([]any, 0)
 
-		str := p.BuildDynamicQuery(&values, []*ConditionGroup{}, nil)
+		str := p.BuildDynamicQuery(&values, []*ConditionGroup{})
 		t.Log(str)
 		if len(str) != 0 {
 			t.Fatalf("build unnessery query")
@@ -71,7 +71,7 @@ func TestDatabaseHelper_BuildDynamicQuery(t *testing.T) {
 				// 	},
 				// },
 			},
-		}, nil)
+		})
 		success := " WHERE (a1 >= $1 AND a2 = $2) AND (O1 >= $3 OR O2 = $4 OR (Oa1 >= $5 AND Oa2 = $6))"
 
 		if str != success {

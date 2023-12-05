@@ -31,7 +31,7 @@ func (c *Condition) valExtractor(values *[]any) (string, []any) {
 	}
 }
 
-func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup, sort *Sort) string {
+func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGroup) string {
 
 	if len(opts) == 0 {
 		return ""
@@ -76,9 +76,12 @@ func (dh *DatabaseHelper) BuildDynamicQuery(values *[]any, opts []*ConditionGrou
 	if len(conditions) != 0 {
 		query = fmt.Sprintf(" WHERE %s", strings.Join(conditions, " AND "))
 	}
+	return query
+}
+
+func (dh *DatabaseHelper) AddSort(sort *Sort) (query string) {
 	if sort != nil {
 		query += fmt.Sprintf("%s ORDER BY %s %s ", query, sort.Column, sort.Direction)
 	}
-
 	return query
 }
