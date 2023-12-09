@@ -21,10 +21,10 @@ func (c *Condition) valExtractor(values *[]any) (string, []any) {
 
 	case OPR_LIKE:
 		*values = append(*values, fmt.Sprintf("%%%s%%", c.Value))
-		return "%s %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
+		return "%s::varchar %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
 	case OPR_NOT_LIKE:
 		*values = append(*values, fmt.Sprintf("%%%s%%", c.Value))
-		return "%s %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
+		return "%s::varchar %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
 	default:
 		*values = append(*values, c.Value)
 		return "%s %s $%d", []any{c.ColumnName, c.Operator, len(*values)}
