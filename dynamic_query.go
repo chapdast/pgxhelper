@@ -10,10 +10,10 @@ func (c *Condition) valExtractor(values *[]any) (string, []any) {
 	switch c.Operator {
 	case OPR_ANY:
 		*values = append(*values, c.Value)
-		return "%s = %s($%d)", []any{c.ColumnName, c.Operator, len(*values)}
+		return "%s = %s (ARRAY($%d))", []any{c.ColumnName, c.Operator, len(*values)}
 	case OPR_IN:
 		*values = append(*values, c.Value)
-		return "$%d %s %s", []any{len(*values), c.Operator, c.ColumnName}
+		return "%s %s ARRAY($%d)", []any{c.ColumnName, c.Operator, len(*values)}
 	case OPR_IS_NULL:
 		return "%s IS NULL", []any{c.ColumnName}
 	case OPR_IS_NOT:
