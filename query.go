@@ -20,6 +20,4 @@ func (dh *DatabaseHelper) Query(ctx context.Context, scanner Scanner, query stri
 		}
 	}
 	return cor(err)
-
-
 }
