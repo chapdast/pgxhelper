@@ -1,4 +1,4 @@
-module github.com/chapdast/pgxhelper/v2
+module github.com/chapdast/pgxhelper
 
 go 1.20
 
