@@ -14,6 +14,7 @@ type DatabaseHelper struct {
 type Scanner = func(row pgx.Row) error
 
 const (
+	OPR_FORMATED    = "-F"
 	OPR_EQUAL     = "="
 	OPR_NOT_EQUAL = "!="
 	OPR_IN        = "IN"
