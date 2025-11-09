@@ -23,6 +23,7 @@ func (dh *DatabaseHelper) Exec(ctx context.Context, query string, values ...any)
 		if err != nil {
 			return err
 		}
+
 		result, err := tx.Exec(ctx, query, values...)
 		if err != nil {
 			if strings.HasPrefix(err.Error(), `ERROR: duplicate key value violates unique constraint`) {
@@ -32,6 +33,7 @@ func (dh *DatabaseHelper) Exec(ctx context.Context, query string, values ...any)
 			return cor(err)
 		}
 		if result.RowsAffected() == 0 {
+			_ = cor(err)
 			return ErrNotFound
 		}
 		return cor(err)

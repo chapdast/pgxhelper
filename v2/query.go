@@ -21,6 +21,7 @@ func (dh *DatabaseHelper) Query(ctx context.Context, scanner Scanner, query stri
 		if err != nil {
 			return err
 		}
+		
 		rows, err := tx.Query(ctx, query, values...)
 		if err != nil {
 			return cor(err)
